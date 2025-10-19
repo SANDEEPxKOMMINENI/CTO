@@ -1,0 +1,21 @@
+{
+  "id": "a304a28a-66e9-4fe5-bf81-559df2f8ab01",
+  "title": "ACME Rebrand",
+  "slug": "acme-rebrand",
+  "role": "Design & Frontend",
+  "client": "ACME Corp",
+  "year": 2024,
+  "tags": ["branding", "web"],
+  "description": "A comprehensive rebranding initiative for ACME, including new visual identity and marketing site.",
+  "longDescriptionMdx": "./acme-rebrand.mdx",
+  "media": [
+    { "type": "image", "url": "/media/acme-rebrand/hero.jpg", "alt": "ACME homepage hero", "caption": "Homepage hero" },
+    { "type": "image", "url": "/media/acme-rebrand/styleguide.jpg", "alt": "Brand styleguide", "caption": "Brand styleguide overview" },
+    { "type": "video", "url": "https://cdn.example.com/videos/acme-rebrand-demo.mp4", "poster": "/media/acme-rebrand/video-poster.jpg", "caption": "Product demo video" }
+  ],
+  "credits": [
+    { "role": "Creative Direction", "name": "Jane Doe", "link": "https://example.com" },
+    { "role": "Design", "name": "Alex Kim" },
+    { "role": "Development", "name": "John Smith" }
+  ]
+}

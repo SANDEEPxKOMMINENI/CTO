@@ -1,0 +1,18 @@
+{
+  "id": "7a9fdd96-29e8-4d70-9fc0-9e50f4e5e2a3",
+  "title": "Mobile App X",
+  "slug": "mobile-app-x",
+  "role": "Full-stack Developer",
+  "client": "X Corp",
+  "year": 2023,
+  "tags": ["mobile", "react-native"],
+  "description": "A cross-platform mobile app built with React Native and a Node.js backend.",
+  "media": [
+    { "type": "image", "url": "/media/mobile-app-x/screens-1.png", "alt": "App screens", "caption": "Selected screens" },
+    { "type": "embed", "html": "<iframe src=\"https://www.youtube.com/embed/dQw4w9WgXcQ\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>", "caption": "Launch teaser" }
+  ],
+  "credits": [
+    { "role": "Product", "name": "Mary Johnson" },
+    { "role": "Engineering", "name": "Sam Edwards" }
+  ]
+}
