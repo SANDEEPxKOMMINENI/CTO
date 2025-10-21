@@ -1,106 +1,96 @@
-# Next.js 14 App Router Starter
+# Next.js + Tailwind Portfolio Starter
 
-A minimal Next.js 14 project bootstrapped with:
+A simple personal portfolio scaffold built with:
 
-- App Router
-- TypeScript (strict)
-- Tailwind CSS (with CSS variables theme)
-- PostCSS
-- ESLint + Prettier (Next + Tailwind rules)
-- Husky + lint-staged pre-commit hook
+- Next.js 14 (App Router) + TypeScript
+- Tailwind CSS (typography + forms plugins)
+- Dark mode via `next-themes` (class strategy)
+- Minimal components and sensible defaults
+
+Pages:
+- Home (`/`): Hero with name, title, intro, CTAs
+- About (`/about`): Profile, skills, timeline (placeholder)
+- Projects (`/projects`): Grid of projects sourced from `src/data/projects.ts`
+- Contact (`/contact`): Contact info and Formspree-enabled form fallback to mailto
 
 ## Getting Started
 
-- Install dependencies: `pnpm install`
-- Start dev server: `pnpm dev`
-- Lint: `pnpm lint`
-- Type check: `pnpm type-check`
-- Format: `pnpm format`
-- Build: `pnpm build`
+1) Install dependencies
 
-## Project Structure
+   npm install
 
-- `src/app` - App Router entry (layout, pages, global styles)
-- `src/components` - Shared UI components
-- `src/lib/projects` - Project content schema and loaders
-- `content/projects` - JSON/MDX content for projects
+2) Start the dev server
 
-## Notes
+   npm run dev
 
-- Tailwind is configured to use CSS variables for a light/dark theme. Adjust variables in `src/app/globals.css`.
-- Pre-commit hook runs ESLint and Prettier on staged files via lint-staged.
+   Open http://localhost:3000
+
+3) Lint, type-check, format
+
+   npm run lint
+   npm run type-check
+   npm run format
+
+## Customize Content
+
+- Site metadata and profile
+  - Edit `site.config.ts` for `name`, `title`, `description`, `email`, and `socials`.
+- Projects
+  - Edit `src/data/projects.ts` to update the list of projects (title, description, tech, links, image optional).
+- Assets
+  - Replace the placeholders in `public/` (`favicon.ico`, `og.png`, `resume.pdf`).
+
+## SEO & Social
+
+- Global metadata is defined in `src/app/layout.tsx` and populated from `site.config.ts`.
+- The Open Graph image defaults to `/og.png`.
+- Set `SITE_URL` in your environment to correct the canonical and OG URL base.
+
+## Dark Mode
+
+- Implemented via `next-themes` with the class strategy.
+- The user preference is persisted and rehydrated on the client.
+
+## Contact Form
+
+- This project supports Formspree. Set the environment variable `FORMSPREE_ID` to enable submissions:
+
+  - Add your Formspree form ID to `.env.local`:
+
+        FORMSPREE_ID="abc123xy"
+        SITE_URL="http://localhost:3000"
+
+  - Restart the dev server after changing env.
+
+- If `FORMSPREE_ID` is not defined, the Contact page shows a mailto link using the email from `site.config.ts`.
+  - If the placeholder email remains (you@example.com), an instruction message is shown instead.
+
+## Deployment (Vercel)
+
+- Click "New Project" in Vercel and import this repository.
+- Use the default Next.js settings. No `vercel.json` is required.
+- Add the following Environment Variables in your Vercel project (optional but recommended):
+  - `FORMSPREE_ID` – your Formspree form ID (enables the contact form)
+  - `SITE_URL` – your site URL (e.g. https://yourdomain.com)
+- Deploy.
+
+## Tech
+
+- next, react, react-dom
+- tailwindcss, postcss, autoprefixer
+- next-themes
+- @tailwindcss/typography, @tailwindcss/forms
+- clsx, lucide-react
+
+## Scripts
+
+- `dev` – start dev server
+- `build` – production build
+- `start` – start production server
+- `lint` – run ESLint
+- `type-check` – run TypeScript compiler
+- `format` – run Prettier write
 
 ---
 
-# Projects Content System
-
-This repository includes a simple content system for portfolio/"projects" backed by JSON files (with optional MDX for long-form descriptions). Zod validates content at build-time/server-time for safety.
-
-## Schema
-
-Each project JSON supports the following fields (all validated via Zod):
-
-- id: string (uuid)
-- title: string
-- slug: string (lowercase, hyphen-separated)
-- role: string
-- client: string (optional)
-- year: number (1900–3000)
-- tags: string[]
-- description: string (optional)
-- longDescriptionMdx: string (optional, path to an MDX file relative to `content/projects`)
-- media: array of media items
-  - image: { type: 'image'; url; alt; caption?; width?; height? }
-  - video: { type: 'video'; url; poster?; caption? }
-  - embed: { type: 'embed'; html; caption? }
-- credits: array of { role; name; link? }
-
-See Zod schema in `src/lib/projects/schema.ts`.
-
-## Data location
-
-- Index file: `content/projects/index.json` contains a list of project slugs, e.g.
-  { "projects": ["acme-rebrand", "mobile-app-x"] }
-- One JSON file per project: `content/projects/<slug>.json`
-- Optional MDX file per project for long-form description placed alongside JSON (e.g. `content/projects/acme-rebrand.mdx`) and referenced via `longDescriptionMdx`.
-
-Sample data is included for two projects.
-
-## Loaders and helpers
-
-Import from `src/lib/projects`:
-
-- getProjectSlugs(): Promise<string[]>
-- getProjectBySlug(slug): Promise<ProjectWithContent>
-- getProjects(): Promise<ProjectWithContent[]> (sorted by year desc)
-- getProjectSummaries(): Promise<ProjectSummary[]>
-- clearProjectsCache(): void
-
-Non-React convenience wrappers exist in `src/lib/projects/hooks.ts`:
-
-- useProjects(): Promise<ProjectSummary[]>
-- useProject(slug): Promise<ProjectWithContent>
-
-Note: These "use*" functions are simple async wrappers for convenience and do not depend on React. In a React app, you can call the helpers in Server Components or wrap them with caching/memoization as desired.
-
-## How to add a new project
-
-1) Add the project slug to `content/projects/index.json`:
-   - Example: add "super-campaign" to the `projects` array.
-
-2) Create `content/projects/super-campaign.json` with the required fields:
-   - Ensure `slug` matches the filename and the index entry.
-   - Provide a unique `id` (uuid). You can generate one online or via `crypto.randomUUID()`.
-
-3) (Optional) Create a `content/projects/super-campaign.mdx` file and set `longDescriptionMdx` to `./super-campaign.mdx` in the JSON.
-
-4) Reference media using URLs or paths under your public assets (e.g. `/media/super-campaign/hero.jpg`). Physical assets are not required for development but recommended for production.
-
-5) Run type check to validate content with Zod at runtime when loaders execute:
-   - `pnpm type-check` (static) and navigate pages that use the loaders to trigger validation.
-
-## Example usage in Next.js Server Components
-
-- List projects: in a server component/page, call `await getProjectSummaries()` and render a list.
-- Project page: call `await getProjectBySlug(params.slug)` in a route like `app/projects/[slug]/page.tsx`.
-
+This starter is intentionally minimal and uses placeholder content so you can focus on iterating your portfolio. Replace content and styles as you see fit.
